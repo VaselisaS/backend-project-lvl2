@@ -2,6 +2,7 @@
   "name": "gendiff",
   "version": "0.0.1",
   "description": "Compares two configuration files and shows a difference.",
+  "main": "dist/index.js",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
@@ -13,7 +14,8 @@
   "author": "Lisa",
   "license": "ISC",
   "dependencies": {
-    "commander": "^2.20.3"
+    "commander": "^2.20.3",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.3",
