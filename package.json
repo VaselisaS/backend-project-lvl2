@@ -3,8 +3,18 @@
   "version": "0.0.1",
   "description": "Compares two configuration files and shows a difference.",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VaselisaS/backend-project-lvl2"
+  },
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "scripts": {
     "test": "jest",
