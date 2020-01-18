@@ -4,7 +4,7 @@ import genDiff from '../src';
 
 const getFixturePath = filename => path.join(__dirname, '..', '__fixtures__', filename);
 
-test.each(['.json', '.yaml'])('gendiff %s', (extension) => {
+test.each(['.json', '.yaml', '.ini'])('gendiff %s', (extension) => {
   const expected = fs.readFileSync(getFixturePath('result.txt'), 'utf-8');
 
   const absolutePathAfter = getFixturePath(`after${extension}`);
