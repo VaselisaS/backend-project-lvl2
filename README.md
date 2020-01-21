@@ -27,3 +27,5 @@ $ make link
 [![asciicast](https://asciinema.org/a/SGV51qEs7xSQXmTou8A3BDpuJ.svg)](https://asciinema.org/a/SGV51qEs7xSQXmTou8A3BDpuJ)
 
 [![asciicast](https://asciinema.org/a/hhaZzUgYWMjLVSlyeu9HUHpBp.svg)](https://asciinema.org/a/hhaZzUgYWMjLVSlyeu9HUHpBp)
+
+[![asciicast](https://asciinema.org/a/7j9ztqqmM5khyBhn9sjWlLG3f.svg)](https://asciinema.org/a/7j9ztqqmM5khyBhn9sjWlLG3f)
