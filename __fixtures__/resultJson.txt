@@ -17,8 +17,8 @@
         "key": "setting3",
         "type": "change",
         "value": {
-          "before": true,
-          "after": {
+          "valueBefore": true,
+          "valueAfter": {
             "key": "value"
           }
         }
@@ -66,8 +66,8 @@
         "key": "baz",
         "type": "change",
         "value": {
-          "before": "bas",
-          "after": "bars"
+          "valueBefore": "bas",
+          "valueAfter": "bars"
         }
       },
       {
@@ -79,10 +79,10 @@
         "key": "nest",
         "type": "change",
         "value": {
-          "before": {
+          "valueBefore": {
             "key": "value"
           },
-          "after": "str"
+          "valueAfter": "str"
         }
       }
     ]

@@ -15,7 +15,7 @@ const stringify = (key, value, depth, designation) => `${' '.repeat(space * dept
 
 const typeData = {
   remove: (key, value, depth) => stringify(key, value, depth, '-'),
-  change: (key, value, depth) => `${stringify(key, value.before, depth, '-')}\n${stringify(key, value.after, depth, '+')}`,
+  change: (key, value, depth) => `${stringify(key, value.valueBefore, depth, '-')}\n${stringify(key, value.valueAfter, depth, '+')}`,
   add: (key, value, depth) => stringify(key, value, depth, '+'),
   unchanged: (key, value, depth) => stringify(key, value, depth, ' '),
 };

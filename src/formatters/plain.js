@@ -9,7 +9,7 @@ const convertedDataToString = (data) => {
 
 const typeData = {
   remove: key => `Property '${key}' was removed`,
-  change: (key, value) => `Property '${key}' was updated. From ${convertedDataToString(value.before)} to ${convertedDataToString(value.after)}`,
+  change: (key, value) => `Property '${key}' was updated. From ${convertedDataToString(value.valueBefore)} to ${convertedDataToString(value.valueAfter)}`,
   add: (key, value) => `Property '${key}' was added with value: ${convertedDataToString(value)}`,
   unchanged: () => '',
 };

@@ -9,32 +9,33 @@ const readFile = pathToFile => fs.readFileSync(pathToFile, 'utf8');
 const propertyActions = [
   {
     type: 'none',
-    check: (before, after, key) => before[key] instanceof Object && after[key] instanceof Object,
+    check: (valueBefore, valueAfter, key) => valueBefore[key] instanceof Object
+      && valueAfter[key] instanceof Object,
     getValue: () => { },
-    getChildren: (before, after, func) => func(before, after),
+    getChildren: (valueBefore, valueAfter, func) => func(valueBefore, valueAfter),
   },
   {
     type: 'add',
-    check: (before, after, key) => _.has(after, key) && !_.has(before, key),
-    getValue: (__, after) => after,
+    check: (valueBefore, valueAfter, key) => _.has(valueAfter, key) && !_.has(valueBefore, key),
+    getValue: (__, valueAfter) => valueAfter,
     getChildren: () => { },
   },
   {
     type: 'remove',
-    check: (before, after, key) => !_.has(after, key),
+    check: (valueBefore, valueAfter, key) => !_.has(valueAfter, key),
     getValue: _.identity,
     getChildren: () => { },
   },
   {
     type: 'change',
-    check: (before, after, key) => after[key] !== before[key],
-    getValue: (before, after) => ({ before, after }),
+    check: (valueBefore, valueAfter, key) => valueAfter[key] !== valueBefore[key],
+    getValue: (valueBefore, valueAfter) => ({ valueBefore, valueAfter }),
     getChildren: () => { },
   },
   {
     type: 'unchanged',
-    check: (before, after, key) => after[key] === before[key],
-    getValue: (__, after) => after,
+    check: (valueBefore, valueAfter, key) => valueAfter[key] === valueBefore[key],
+    getValue: (__, valueAfter) => valueAfter,
     getChildren: () => { },
   },
 ];
