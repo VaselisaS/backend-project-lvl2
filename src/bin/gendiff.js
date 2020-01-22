@@ -6,7 +6,7 @@ import genDiff from '..';
 program
   .version(version)
   .description(description)
-  .option('-f, --format [type]', 'Output format', 'json')
+  .option('-f, --format [type]', 'Output format', 'ast')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
     const result = genDiff(firstConfig, secondConfig, program.format);

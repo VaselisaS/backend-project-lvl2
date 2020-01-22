@@ -9,38 +9,38 @@ const readFile = pathToFile => fs.readFileSync(pathToFile, 'utf8');
 const propertyActions = [
   {
     type: 'none',
-    check: (after, before, key) => before[key] instanceof Object && after[key] instanceof Object,
+    check: (before, after, key) => before[key] instanceof Object && after[key] instanceof Object,
     getValue: () => { },
-    getChildren: (after, before, func) => func(before, after),
+    getChildren: (before, after, func) => func(before, after),
   },
   {
     type: 'add',
-    check: (after, before, key) => _.has(after, key) && !_.has(before, key),
-    getValue: after => ({ after }),
+    check: (before, after, key) => _.has(after, key) && !_.has(before, key),
+    getValue: (__, after) => after,
     getChildren: () => { },
   },
   {
     type: 'remove',
-    check: (after, before, key) => !_.has(after, key),
-    getValue: (after, before) => ({ before }),
+    check: (before, after, key) => !_.has(after, key),
+    getValue: _.identity,
     getChildren: () => { },
   },
   {
     type: 'change',
-    check: (after, before, key) => after[key] !== before[key],
-    getValue: (after, before) => ({ after, before }),
+    check: (before, after, key) => after[key] !== before[key],
+    getValue: (before, after) => ({ before, after }),
     getChildren: () => { },
   },
   {
     type: 'unchanged',
-    check: (after, before, key) => after[key] === before[key],
-    getValue: after => ({ after }),
+    check: (before, after, key) => after[key] === before[key],
+    getValue: (__, after) => after,
     getChildren: () => { },
   },
 ];
 
-const getPropertyAction = (dataAfter, dataBefore, key) => _
-  .find(propertyActions, ({ check }) => check(dataAfter, dataBefore, key));
+const getPropertyAction = (dataBefore, dataAfter, key) => _
+  .find(propertyActions, ({ check }) => check(dataBefore, dataAfter, key));
 
 const compereData = (dataBefore, dataAfter) => _.uniq(
   [
@@ -49,15 +49,15 @@ const compereData = (dataBefore, dataAfter) => _.uniq(
   ],
 ).map((key) => {
   const { type, getValue, getChildren } = getPropertyAction(
-    dataAfter,
     dataBefore,
+    dataAfter,
     key,
   );
   return {
     key,
     type,
-    value: getValue(dataAfter[key], dataBefore[key]),
-    children: getChildren(dataAfter[key], dataBefore[key], compereData),
+    value: getValue(dataBefore[key], dataAfter[key]),
+    children: getChildren(dataBefore[key], dataAfter[key], compereData),
   };
 });
 

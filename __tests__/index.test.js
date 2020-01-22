@@ -1,26 +1,26 @@
 import fs from 'fs';
 import path from 'path';
+import { upperFirst } from 'lodash';
 import genDiff from '../src';
 
 const getFixturePath = filename => path.join(__dirname, '..', '__fixtures__', filename);
 
-test.each(['.json', '.yaml', '.ini'])('gendiff %s', (extension) => {
-  const expectedJson = fs.readFileSync(getFixturePath('resultJson.txt'), 'utf-8');
-  const expectedPlain = fs.readFileSync(getFixturePath('resultPlain.txt'), 'utf-8');
-
-  const absolutePathAfter = getFixturePath(`after${extension}`);
+test.each([
+  ['.json', 'plain'],
+  ['.yaml', 'json'],
+  ['.ini', 'ast'],
+])('gendiff extension %s format %s', (extension, format) => {
+  const expected = fs.readFileSync(getFixturePath(`result${upperFirst(format)}.txt`), 'utf-8').trim();
   const absolutePathBefore = getFixturePath(`before${extension}`);
-  const actualJson = genDiff(absolutePathBefore, absolutePathAfter, 'json');
-  const actualPlain = genDiff(absolutePathBefore, absolutePathAfter, 'plain');
+  const absolutePathAfter = getFixturePath(`after${extension}`);
 
-  expect(actualJson).toBe(expectedJson.trim());
-  expect(actualPlain).toBe(expectedPlain.trim());
+  const actual = genDiff(absolutePathBefore, absolutePathAfter, format);
+
+  expect(actual).toBe(expected);
 
   const relativePathsAfter = path.join('.', '__fixtures__', `after${extension}`);
   const relativePathsBefore = path.join('.', '__fixtures__', `before${extension}`);
-  const actualJson2 = genDiff(relativePathsBefore, relativePathsAfter, 'json');
-  const actualPlain2 = genDiff(relativePathsBefore, relativePathsAfter, 'plain');
+  const actual2 = genDiff(relativePathsBefore, relativePathsAfter, format);
 
-  expect(actualJson2).toBe(actualJson2.trim());
-  expect(actualPlain2).toBe(actualPlain2.trim());
+  expect(actual2).toBe(expected);
 });
