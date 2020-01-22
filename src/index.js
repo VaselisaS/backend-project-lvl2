@@ -1,8 +1,8 @@
 import fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
-import render from './render';
 import parser from './parsers';
+import render from './formatters';
 
 const readFile = pathToFile => fs.readFileSync(pathToFile, 'utf8');
 
@@ -61,11 +61,11 @@ const compereData = (dataBefore, dataAfter) => _.uniq(
   };
 });
 
-export default (...pathToFiles) => {
-  const [dataBefore, dataAfter] = pathToFiles.map((pathToFile) => {
+export default (pathBefore, pathAfter, format) => {
+  const [dataBefore, dataAfter] = [pathBefore, pathAfter].map((pathToFile) => {
     const extension = path.extname(pathToFile).slice(1);
     return parser[extension](readFile(pathToFile));
   });
   const result = compereData(dataBefore, dataAfter);
-  return render(result);
+  return render[format](result);
 };
