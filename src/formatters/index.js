@@ -2,8 +2,10 @@ import json from './json';
 import plain from './plain';
 import ast from './ast';
 
-export default {
+const formatters = ({
   json,
   plain,
   ast,
-};
+});
+
+export default (data, format) => formatters[format](data);

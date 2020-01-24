@@ -1,4 +1,4 @@
-const convertedDataToString = (data) => {
+const toString = (data) => {
   if (data instanceof Object) {
     return Object.keys(data)
       .map(key => `[${key} ${data[key]}]`)
@@ -9,19 +9,17 @@ const convertedDataToString = (data) => {
 
 const typeData = {
   remove: key => `Property '${key}' was removed`,
-  change: (key, value) => `Property '${key}' was updated. From ${convertedDataToString(value.valueBefore)} to ${convertedDataToString(value.valueAfter)}`,
-  add: (key, value) => `Property '${key}' was added with value: ${convertedDataToString(value)}`,
+  change: (key, value) => `Property '${key}' was updated. From ${toString(value.valueBefore)} to ${toString(value.valueAfter)}`,
+  add: (key, value) => `Property '${key}' was added with value: ${toString(value)}`,
   unchanged: () => '',
 };
 
 export default (data) => {
   const iter = (node, parent) => node
-    .map(({
-      children, key, type, value,
-    }) => {
+    .map(({ key, type, value }) => {
       const newKey = parent ? parent.concat('.', key) : key;
-      if (children) {
-        return iter(children, newKey);
+      if (type === 'children') {
+        return iter(value, newKey);
       }
       return typeData[type](newKey, value);
     })

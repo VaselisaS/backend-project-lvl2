@@ -3,7 +3,8 @@ import path from 'path';
 import { upperFirst } from 'lodash';
 import genDiff from '../src';
 
-const getFixturePath = filename => path.join(__dirname, '..', '__fixtures__', filename);
+const fullPathToDir = path.join(__dirname, '..');
+const getFixturePath = (filename, dir = fullPathToDir) => path.join(dir, '__fixtures__', filename);
 
 test.each([
   ['.json', 'plain'],
@@ -18,8 +19,8 @@ test.each([
 
   expect(actual).toBe(expected);
 
-  const relativePathsAfter = path.join('.', '__fixtures__', `after${extension}`);
-  const relativePathsBefore = path.join('.', '__fixtures__', `before${extension}`);
+  const relativePathsAfter = getFixturePath(`after${extension}`, '.');
+  const relativePathsBefore = getFixturePath(`before${extension}`, '.');
   const actual2 = genDiff(relativePathsBefore, relativePathsAfter, format);
 
   expect(actual2).toBe(expected);
