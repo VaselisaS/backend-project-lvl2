@@ -42,7 +42,7 @@ const propertyActions = [
 const getPropertyAction = (dataBefore, dataAfter, key) => _
   .find(propertyActions, ({ check }) => check(dataBefore, dataAfter, key));
 
-const buildAst = (dataBefore, dataAfter) => Object.keys({ ...dataBefore, ...dataAfter })
+const buildAst = (dataBefore, dataAfter) => _.union(Object.keys(dataBefore), Object.keys(dataAfter))
   .map((key) => {
     const { type, getValue } = getPropertyAction(dataBefore, dataAfter, key);
     return {
