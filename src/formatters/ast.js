@@ -1,17 +1,21 @@
 const space = 4;
 
+const indent = (count) => ' '.repeat(count * space);
+
 const toString = (data, depth) => {
-  if (data instanceof Object) {
-    const result = Object.keys(data)
-      .map(key => `${key}: ${data[key]}`)
-      .join(`${' '.repeat(space + space * depth)}`);
-    return `{\n${' '.repeat(space + space * depth)}${result}\n${' '.repeat(space * depth)}}`;
+  if (!(data instanceof Object)) {
+    return `${data}`;
   }
-  return `${data}`;
+  const result = Object.keys(data)
+    .map((key) => `${key}: ${data[key]}`)
+    .join(`${indent(depth)}`);
+  return `{\n${indent(depth + 1)}${result}\n${indent(depth)}}`;
 };
 
-const stringify = (key, value, depth, designation) => `${' '.repeat(space * depth)
-  .slice(0, -2)}${designation} ${key}: ${toString(value, depth)}`;
+const stringify = (key, value, depth, designation) => `${indent(depth).slice(0, -2)}${designation} ${key}: ${toString(
+  value,
+  depth,
+)}`;
 
 const typeData = {
   remove: (key, value, depth) => stringify(key, value, depth, '-'),
@@ -22,16 +26,12 @@ const typeData = {
   },
   add: (key, value, depth) => stringify(key, value, depth, '+'),
   unchanged: (key, value, depth) => stringify(key, value, depth, ' '),
+  children: (key, value, depth, fun) => `${indent(depth)}${key}: {\n${fun(value, depth + 1)}\n${indent(depth)}}`,
 };
 
 export default (data) => {
   const iter = (dataForRender, depth) => dataForRender
-    .map(({ key, type, value }) => {
-      if (type === 'children') {
-        return `${' '.repeat(space * depth)}${key}: {\n${iter(value, depth + 1)}\n${' '.repeat(space * depth)}}`;
-      }
-      return `${typeData[type](key, value, depth)}`;
-    })
+    .map(({ key, type, value }) => typeData[type](key, value, depth, iter))
     .join('\n');
   return `{\n${iter(data, 1)}\n}`;
 };

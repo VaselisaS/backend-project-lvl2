@@ -15,27 +15,27 @@ const propertyActions = [
     type: 'children',
     check: (valueBefore, valueAfter, key) => valueBefore[key] instanceof Object
       && valueAfter[key] instanceof Object,
-    getValue: (valueBefore, valueAfter, func) => func(valueBefore, valueAfter),
+    process: (valueBefore, valueAfter, func) => func(valueBefore, valueAfter),
   },
   {
     type: 'add',
     check: (valueBefore, valueAfter, key) => _.has(valueAfter, key) && !_.has(valueBefore, key),
-    getValue: (__, valueAfter) => valueAfter,
+    process: (__, valueAfter) => valueAfter,
   },
   {
     type: 'remove',
     check: (valueBefore, valueAfter, key) => !_.has(valueAfter, key),
-    getValue: _.identity,
+    process: _.identity,
   },
   {
     type: 'change',
     check: (valueBefore, valueAfter, key) => valueAfter[key] !== valueBefore[key],
-    getValue: (valueBefore, valueAfter) => ({ valueBefore, valueAfter }),
+    process: (valueBefore, valueAfter) => ({ valueBefore, valueAfter }),
   },
   {
     type: 'unchanged',
     check: (valueBefore, valueAfter, key) => valueAfter[key] === valueBefore[key],
-    getValue: (__, valueAfter) => valueAfter,
+    process: (__, valueAfter) => valueAfter,
   },
 ];
 
@@ -44,17 +44,17 @@ const getPropertyAction = (dataBefore, dataAfter, key) => _
 
 const buildAst = (dataBefore, dataAfter) => _.union(Object.keys(dataBefore), Object.keys(dataAfter))
   .map((key) => {
-    const { type, getValue } = getPropertyAction(dataBefore, dataAfter, key);
+    const { type, process } = getPropertyAction(dataBefore, dataAfter, key);
     return {
       key,
       type,
-      value: getValue(dataBefore[key], dataAfter[key], buildAst),
+      value: process(dataBefore[key], dataAfter[key], buildAst),
     };
   });
 
 export default (pathToFileBefore, pathFileToAfter, format) => {
   const [dataBefore, dataAfter] = [pathToFileBefore, pathFileToAfter]
-    .map(pathToFile => getParsedContent(pathToFile));
+    .map((pathToFile) => getParsedContent(pathToFile));
   const result = buildAst(dataBefore, dataAfter);
   return render(result, format);
 };
