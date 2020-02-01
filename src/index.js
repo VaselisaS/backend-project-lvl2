@@ -12,20 +12,20 @@ const getParsedContent = (pathToFile) => {
 
 const propertyActions = [
   {
-    type: 'children',
+    type: 'nested',
     check: (valueBefore, valueAfter, key) => valueBefore[key] instanceof Object
       && valueAfter[key] instanceof Object,
-    process: (valueBefore, valueAfter, func) => func(valueBefore, valueAfter),
+    process: (valueBefore, valueAfter, func) => ({ children: func(valueBefore, valueAfter) }),
   },
   {
     type: 'add',
     check: (valueBefore, valueAfter, key) => _.has(valueAfter, key) && !_.has(valueBefore, key),
-    process: (__, valueAfter) => valueAfter,
+    process: (__, valueAfter) => ({ valueAfter }),
   },
   {
     type: 'remove',
     check: (valueBefore, valueAfter, key) => !_.has(valueAfter, key),
-    process: _.identity,
+    process: (valueBefore) => ({ valueBefore }),
   },
   {
     type: 'change',
@@ -35,7 +35,7 @@ const propertyActions = [
   {
     type: 'unchanged',
     check: (valueBefore, valueAfter, key) => valueAfter[key] === valueBefore[key],
-    process: (__, valueAfter) => valueAfter,
+    process: (valueBefore) => ({ valueBefore }),
   },
 ];
 
@@ -48,7 +48,7 @@ const buildAst = (dataBefore, dataAfter) => _.union(Object.keys(dataBefore), Obj
     return {
       key,
       type,
-      value: process(dataBefore[key], dataAfter[key], buildAst),
+      ...process(dataBefore[key], dataAfter[key], buildAst),
     };
   });
 

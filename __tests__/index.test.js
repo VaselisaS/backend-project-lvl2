@@ -9,7 +9,7 @@ const getFixturePath = (filename, dir = fullPathToDir) => path.join(dir, '__fixt
 test.each([
   ['.json', 'plain'],
   ['.yaml', 'json'],
-  ['.ini', 'ast'],
+  ['.ini', 'winding'],
 ])('gendiff extension %s format %s', (extension, format) => {
   const expected = fs.readFileSync(getFixturePath(`result${upperFirst(format)}.txt`), 'utf-8').trim();
   const absolutePathBefore = getFixturePath(`before${extension}`);

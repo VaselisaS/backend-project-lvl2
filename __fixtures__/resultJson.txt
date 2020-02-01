@@ -1,58 +1,56 @@
 [
   {
     "key": "common",
-    "type": "children",
-    "value": [
+    "type": "nested",
+    "children": [
       {
         "key": "setting1",
         "type": "unchanged",
-        "value": "Value 1"
+        "valueBefore": "Value 1"
       },
       {
         "key": "setting2",
         "type": "remove",
-        "value": 200
+        "valueBefore": 200
       },
       {
         "key": "setting3",
         "type": "change",
-        "value": {
-          "valueBefore": true,
-          "valueAfter": {
-            "key": "value"
-          }
+        "valueBefore": true,
+        "valueAfter": {
+          "key": "value"
         }
       },
       {
         "key": "setting6",
-        "type": "children",
-        "value": [
+        "type": "nested",
+        "children": [
           {
             "key": "key",
             "type": "unchanged",
-            "value": "value"
+            "valueBefore": "value"
           },
           {
             "key": "ops",
             "type": "add",
-            "value": "vops"
+            "valueAfter": "vops"
           }
         ]
       },
       {
         "key": "follow",
         "type": "add",
-        "value": false
+        "valueAfter": false
       },
       {
         "key": "setting4",
         "type": "add",
-        "value": "blah blah"
+        "valueAfter": "blah blah"
       },
       {
         "key": "setting5",
         "type": "add",
-        "value": {
+        "valueAfter": {
           "key5": "value5"
         }
       }
@@ -60,44 +58,40 @@
   },
   {
     "key": "group1",
-    "type": "children",
-    "value": [
+    "type": "nested",
+    "children": [
       {
         "key": "baz",
         "type": "change",
-        "value": {
-          "valueBefore": "bas",
-          "valueAfter": "bars"
-        }
+        "valueBefore": "bas",
+        "valueAfter": "bars"
       },
       {
         "key": "foo",
         "type": "unchanged",
-        "value": "bar"
+        "valueBefore": "bar"
       },
       {
         "key": "nest",
         "type": "change",
-        "value": {
-          "valueBefore": {
-            "key": "value"
-          },
-          "valueAfter": "str"
-        }
+        "valueBefore": {
+          "key": "value"
+        },
+        "valueAfter": "str"
       }
     ]
   },
   {
     "key": "group2",
     "type": "remove",
-    "value": {
+    "valueBefore": {
       "abc": 12345
     }
   },
   {
     "key": "group3",
     "type": "add",
-    "value": {
+    "valueAfter": {
       "fee": 100500
     }
   }

@@ -1,11 +1,11 @@
 import json from './json';
 import plain from './plain';
-import ast from './ast';
+import winding from './winding';
 
-const formatters = ({
+const formatters = {
   json,
   plain,
-  ast,
-});
+  winding,
+};
 
 export default (data, format) => formatters[format](data);
