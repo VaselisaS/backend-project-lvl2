@@ -20,20 +20,19 @@ const stringify = (key, value, depth, designation) => `${indent(depth).slice(0, 
 )}`;
 
 const typeData = {
-  remove: (key, value, depth) => stringify(key, value.valueBefore, depth, '-'),
-  change: (key, value, depth) => {
-    const valueBefore = stringify(key, value.valueBefore, depth, '-');
-    const valueAfter = stringify(key, value.valueAfter, depth, '+');
-    return `${valueBefore}\n${valueAfter}`;
-  },
-  add: (key, value, depth) => stringify(key, value.valueAfter, depth, '+'),
-  unchanged: (key, value, depth) => stringify(key, value.valueBefore, depth, ' '),
-  nested: (key, value, depth, fun) => `${indent(depth)}${key}: {\n${fun(value.children, depth + 1)}\n${indent(depth)}}`,
+  remove: ({ key, valueBefore }, depth) => stringify(key, valueBefore, depth, '-'),
+  change: ({ key, valueBefore, valueAfter }, depth) => `${stringify(key, valueBefore, depth, '-')}\n${stringify(key, valueAfter, depth, '+')}`,
+  add: ({ key, valueAfter }, depth) => stringify(key, valueAfter, depth, '+'),
+  unchanged: ({ key, valueBefore }, depth) => stringify(key, valueBefore, depth, ' '),
+  nested: ({ key, children }, depth, fun) => `${indent(depth)}${key}: {\n${fun(children, depth + 1)}\n${indent(depth)}}`,
 };
 
 export default (data) => {
   const iter = (dataForRender, depth) => dataForRender
-    .map(({ key, type, ...values }) => typeData[type](key, values, depth, iter))
+    .map((node) => {
+      const { type } = node;
+      return typeData[type](node, depth, iter);
+    })
     .join('\n');
   return `{\n${iter(data, 1)}\n}`;
 };
